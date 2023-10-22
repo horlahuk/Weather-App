@@ -36,17 +36,35 @@
     </div>
 
     <script>
-        async function getWeather() {
-            var result = await fetch('https://api.openweathermap.org/data/2.5/weather?q=ilesha&appid=3b74d8d2c5443004dba12b74c5722556&units=metric');
+        const searchInput = document.querySelector('.search input');
+        const searchBtn = document.querySelector('.search button');
+        const image = document.querySelector('.icon');
+
+        async function getWeather(city) {
+            var result = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=3b74d8d2c5443004dba12b74c5722556&units=metric`);
             var data = await result.json();
 
-            document.querySelector('.celsius').innerHTML = data.main.temp;
+            document.querySelector('.celsius').innerHTML = Math.round(data.main.temp) + "°c";
             document.querySelector('.city').innerHTML = data.name;
-            document.querySelector('.humidityP').innerHTML = data.main.humidity;
-            document.querySelector('.windS').innerHTML = data.wind.speed;
+            document.querySelector('.humidityP').innerHTML = Math.round(data.main.humidity) + "%";
+            document.querySelector('.windS').innerHTML = Math.round(data.wind.speed) + "k/h";
 
-            console.log(data);
+            if(data.weather[0].main == "Clouds") {
+                image.src = "./images/clouds.png"
+            } else if(data.weather[0].main == "Clear") {
+                image.src = "./images/clear.png"
+            } else if(data.weather[0].main == "Rain") {
+                image.src = "./images/rain.png"
+            } else if(data.weather[0].main == "Drizzle") {
+                image.src = "./images/drizzle.png"
+            } else if(data.weather[0].main == "Mist") {
+                image.src = "./images/mist.png"
+            }
         }
+
+        searchBtn.addEventListener('click', () => {
+            getWeather(searchInput.value)
+        })
 
         getWeather();
     </script>
