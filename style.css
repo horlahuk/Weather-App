@@ -90,3 +90,10 @@ body {
 .humidity .wind {
     font-size: 27px;
 }
+.error {
+    text-align: left;
+    color: red;
+    margin-top: 5px;
+    margin-left: 5px;
+    display: none;
+}
