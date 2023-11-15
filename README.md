@@ -1,6 +1,6 @@
 # Weather App
 
-##Overview
+## Overview
 The Weather App is a simple web application that allows users to check the current weather conditions for a specific city. Users can enter a city name, and the app will provide information such as temperature, humidity, wind speed, and a visual representation of the weather condition using cloud icons.
 
 ## Features
