@@ -7,19 +7,34 @@
     <title>Weather App</title>
 </head>
 <body>
+    <!-- Container for the entire Weather App -->
     <div class="container">
+        
+        <!-- Search section: Input field and search button -->
         <div class="search">
             <input type="text" placeholder="Enter city name...">
             <button><img src="./images/search.png" alt="search weather"></button>
         </div>
+
+        <!-- Error section: Displayed when there's an invalid city name -->
         <div class="error">
             <p>Invalid city name</p>
         </div>
+
+        <!-- Weather section: Displays weather information -->
         <div class="weather">
+            <!-- Weather icon representing the current weather condition -->
             <img src="./images/clear.png" class="icon" alt="weather image">
+
+            <!-- Temperature in Celsius -->
             <h1 class="celsius">22°c</h1>
+
+            <!-- City name -->
             <h2 class="city">London</h2>
+
+            <!-- Weather details: Humidity and Wind speed -->
             <div class="detail">
+                <!-- Humidity details -->
                 <div class="col">
                     <img src="./images/humidity.png" alt="humidity">
                     <div class="humidity">
@@ -27,8 +42,10 @@
                         <p>Humidity</p>
                     </div>
                 </div>
+
+                <!-- Wind speed details -->
                 <div class="col">
-                    <img src="./images/wind.png" alt="humidity">
+                    <img src="./images/wind.png" alt="wind">
                     <div class="wind">
                         <p class="windS">20k/h</p>
                         <p>Wind</p>
@@ -38,25 +55,35 @@
         </div>
     </div>
 
+    <!-- JavaScript code for handling user input and fetching weather data -->
     <script>
+        // Selecting elements from the HTML document
         const searchInput = document.querySelector('.search input');
         const searchBtn = document.querySelector('.search button');
         const image = document.querySelector('.icon');
 
+        // Async function to fetch weather data from the OpenWeatherMap API
         async function getWeather(city) {
+            // Fetch data from the API using the provided city name
             var result = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=3b74d8d2c5443004dba12b74c5722556&units=metric`);
+
+            // Check if the city is not found (HTTP 404)
             if (result.status == 404) {
-                document.querySelector('.error').style.display ='block'
+                document.querySelector('.error').style.display ='block'; // Display error message
             } else {
-                document.querySelector('.error').style.display = 'none'
+                document.querySelector('.error').style.display = 'none'; // Hide error message
             }
+
+            // Extract JSON data from the API response
             var data = await result.json();
 
+            // Update HTML elements with weather data
             document.querySelector('.celsius').innerHTML = Math.round(data.main.temp) + "°c";
             document.querySelector('.city').innerHTML = data.name;
             document.querySelector('.humidityP').innerHTML = Math.round(data.main.humidity) + "%";
             document.querySelector('.windS').innerHTML = Math.round(data.wind.speed) + "k/h";
 
+            // Update the weather icon based on the current weather condition
             if(data.weather[0].main == "Clouds") {
                 image.src = "./images/clouds.png"
             } else if(data.weather[0].main == "Clear") {
@@ -71,9 +98,11 @@
                 image.src = "./images/snow.png"
             }
 
+            // Log the entire weather data object to the console
             console.log(data);
         }
 
+        // Event listener for the search button, triggers getWeather function
         searchBtn.addEventListener('click', () => {
             getWeather(searchInput.value)
         })
